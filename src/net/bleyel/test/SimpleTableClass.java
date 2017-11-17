@@ -14,8 +14,8 @@ public class SimpleTableClass extends JFrame {
 
     private JTable table;
 
-    public SimpleTableClass(int rows, int cols, ArrayList<Object> data) {
-        table = new JTable(new SimpleTableModel(rows, cols,data));
+    public SimpleTableClass(int rows, int cols, ArrayList<Object> data, boolean algorithm) {
+        table = new JTable(new SimpleTableModel(rows, cols,data,algorithm));
         setColumnWidth();
         JScrollPane sPane = new JScrollPane(table);
 

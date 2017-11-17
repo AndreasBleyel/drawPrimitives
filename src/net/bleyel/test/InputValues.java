@@ -36,10 +36,14 @@ public class InputValues {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                  try {
-                    int xStart = Integer.parseInt(txt_xStart.getText());
+                    /*int xStart = Integer.parseInt(txt_xStart.getText());
                     int xEnd = Integer.parseInt(txt_xEnd.getText());
                     int yStart = Integer.parseInt(txt_yStart.getText());
-                    int yEnd = Integer.parseInt(txt_yEnd.getText());
+                    int yEnd = Integer.parseInt(txt_yEnd.getText());*/
+                    int xStart=50;
+                    int yStart=71;
+                    int xEnd=32;
+                    int yEnd=79;
                     showDrawing(xStart, xEnd, yStart, yEnd);
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Invalid Input");
@@ -64,8 +68,9 @@ public class InputValues {
 
         JFrame drawingFrame = new JFrame("Drawing Frame");
         DrawPrimitives panel = new DrawPrimitives(width, height, Color.WHITE);
-        //panel.drawRect(Color.RED,20,20,40,40);
-        panel.drawLine(xStart,height-yStart,xEnd,height-yEnd,Color.black);
+        //panel.drawLine(xStart,yStart,xEnd,yEnd,Color.black,false); //Bres
+        panel.drawLine(xStart,yStart,xEnd,yEnd,Color.black,true); //DDA
+
         drawingFrame.add(panel);
         drawingFrame.pack();
         drawingFrame.setVisible(true);

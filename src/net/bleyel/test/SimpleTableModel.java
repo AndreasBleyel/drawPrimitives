@@ -11,15 +11,17 @@ public class SimpleTableModel extends DefaultTableModel {
     private int rows, cols;
     private ArrayList<Object> data;
     private Object[] rowData;
+    private boolean algorithm;
 
-    private java.lang.String[] headersDDALine = new java.lang.String[]{"K", "xk", "yk", "(xk","yk)"};
+    private java.lang.String[] headersDDALine = new java.lang.String[]{"K", "xk", "yk", "(xk", "yk)"};
     private java.lang.String[] headersBresLine = new java.lang.String[]{"K", "pk", "xk+1", "yk+1"};
 
-    public SimpleTableModel(int rows, int cols, ArrayList<Object> data) {
+    public SimpleTableModel(int rows, int cols, ArrayList<Object> data, boolean algorithm) {
         super();
         setRows(rows);
         setCols(cols);
         setData(data);
+        setAlgorithm(algorithm);
         rowData = new Object[cols];
         initModelData();
     }
@@ -27,17 +29,29 @@ public class SimpleTableModel extends DefaultTableModel {
     private void initModelData() {
 
         for (int i = 0; i < cols; i++) {
-            this.addColumn(headersDDALine[i]);
+            if (algorithm)
+                this.addColumn(headersDDALine[i]);
+            else
+                this.addColumn(headersBresLine[i]);
         }
 
-        int k=0;
-        for (int j = 0; j <= rows; j++) {
-
-            for (int i = 0; i < cols; i++) {
-                rowData[i] = data.get(k);
-                k++;
+        int k = 0;
+        if (algorithm) {
+            //DDA
+            for (int j = 0; j <= rows; j++) {
+                for (int i = 0; i < cols; i++) {
+                    System.out.println(data.size() + " rows: " + rows + " cols: " + cols + " k: " + k);
+                    rowData[i] = data.get(k);
+                    k++;
+                }
+                this.addRow(rowData);
             }
-            this.addRow(rowData);
+        } else {
+            //Bres
+            for (Object obj:data
+                 ) {
+                System.out.println(obj);
+            }
         }
     }
 
@@ -63,5 +77,13 @@ public class SimpleTableModel extends DefaultTableModel {
 
     public void setData(ArrayList<Object> data) {
         this.data = data;
+    }
+
+    public boolean isAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(boolean algorithm) {
+        this.algorithm = algorithm;
     }
 }

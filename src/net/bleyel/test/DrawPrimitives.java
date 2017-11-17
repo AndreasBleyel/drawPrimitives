@@ -36,64 +36,93 @@ public class DrawPrimitives extends JPanel {
     }
 
 
-    public void drawLine(int xStart, int yStart, int xEnd, int yEnd, Color c) {
+    public void drawLine(int xStart, int yStart, int xEnd, int yEnd, Color c, boolean algorithm) {
         // Implement line drawing
         //DDA
+        //algo true = DDA
+        //algo false = Bresenham
 
         ArrayList<Object> data = new ArrayList<Object>();
 
-        int dx = xEnd - xStart;
-        int dy = yEnd - yStart;
         int sumRows;
+        int cols;
         int xPixel=0;
         int yPixel=0;
-        float xk1=xStart;
-        float yk1=yStart;
 
-        if(Math.abs(dx) > Math.abs(dy))
+        int dx = xEnd - xStart;
+        int dy = yEnd - yStart;
+
+        if (Math.abs(dx) > Math.abs(dy))
             sumRows = Math.abs(dx);
         else
-            sumRows=Math.abs(dy);
-
-        float xIncrement = dx / (float) sumRows;
-        float yIncrement = dy / (float) sumRows;
+            sumRows = Math.abs(dy);
 
         data.add(0);
         data.add(xStart);
-        data.add(600-yStart);
+        data.add(yStart);
         data.add(xStart);
-        data.add(600-yStart);
-        canvas.setRGB(xStart, yStart, Color.green.getRGB());
+        data.add(yStart);
+        canvas.setRGB(xStart, 600-yStart, Color.green.getRGB());
 
+        if (algorithm) {
+            //DDA
+            cols=5;
+            float xk1 = xStart;
+            float yk1 = yStart;
 
-        int lastK=0;
-        for(int k=1; k < sumRows; k++){
-            xk1+=xIncrement;
-            yk1+=yIncrement;
+            float xIncrement = dx / (float) sumRows;
+            float yIncrement = dy / (float) sumRows;
 
-            xPixel = Math.round(xk1);
-            yPixel = Math.round(yk1);
+            for (int k = 1; k < sumRows; k++) {
+                xk1 += xIncrement;
+                yk1 += yIncrement;
 
-            System.out.println("xpix: "+xPixel+" ypix: "+yPixel);
-            canvas.setRGB(xPixel, yPixel, c.getRGB());
+                xPixel = Math.round(xk1);
+                yPixel = Math.round(yk1);
 
-            data.add(k);
-            data.add(xk1);
-            data.add(600-yk1);
-            data.add(xPixel);
-            data.add(600-yPixel);
-            lastK=k;
-        }
+                System.out.println("xpix: " + xPixel + " ypix: " + yPixel);
+                canvas.setRGB(xPixel, 600-yPixel, c.getRGB());
 
-        data.add(lastK++);
+                data.add(k);
+                data.add(xk1);
+                data.add(yk1);
+                data.add(xPixel);
+                data.add(yPixel);
+            }
+
+        } else {
+            //Bresenham
+            cols=4;
+            int dx2 = 2 * dx; // slope scaling factors to
+            int dy2 = 2 * dy; // avoid floating point
+
+            int ix = xStart < xEnd ? 1 : -1; // increment direction
+            int iy = yStart < yEnd ? 1 : -1;
+
+            int p = dy2-dx;
+
+            for (int i=0; i<Math.abs(dx); i++){
+                if(p<0){
+                    xPixel += ix;
+                    p=p+dy2;
+                }else{
+                    xPixel += ix;
+                    yPixel += iy;
+                    p=p+dy2-dx2;
+                }
+                canvas.setRGB(xPixel, yPixel, c.getRGB());
+            }
+       }
+
+        data.add(sumRows);
         data.add(xEnd);
-        data.add(600-yEnd);
+        data.add(yEnd);
         data.add(xEnd);
-        data.add(600-yEnd);
-        canvas.setRGB(xEnd, yEnd, Color.red.getRGB());
+        data.add(yEnd);
+        canvas.setRGB(xEnd, 600-yEnd, Color.red.getRGB());
 
+        new SimpleTableClass(sumRows,cols, data,algorithm);
         repaint();
-        new SimpleTableClass(sumRows, 5, data);
     }
 
     public void drawRect(Color c, int x1, int y1, int width, int height) {
