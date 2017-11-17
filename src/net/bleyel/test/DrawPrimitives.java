@@ -38,9 +38,9 @@ public class DrawPrimitives extends JPanel {
 
     public void drawLine(int xStart, int yStart, int xEnd, int yEnd, Color c) {
         // Implement line drawing
-
         //DDA
-        ArrayList<Float> data = new ArrayList<Float>();
+
+        ArrayList<Object> data = new ArrayList<Object>();
 
         int dx = xEnd - xStart;
         int dy = yEnd - yStart;
@@ -58,27 +58,39 @@ public class DrawPrimitives extends JPanel {
         float xIncrement = dx / (float) sumRows;
         float yIncrement = dy / (float) sumRows;
 
-        data.add(0f);
-        data.add((float) xStart);
-        data.add((float) yStart);
-        data.add((float) xStart);
-        data.add((float) yStart);
+        data.add(0);
+        data.add(xStart);
+        data.add(600-yStart);
+        data.add(xStart);
+        data.add(600-yStart);
+        canvas.setRGB(xStart, yStart, Color.green.getRGB());
 
-        for(int k=1; k <= sumRows; k++){
+
+        int lastK=0;
+        for(int k=1; k < sumRows; k++){
             xk1+=xIncrement;
             yk1+=yIncrement;
 
             xPixel = Math.round(xk1);
             yPixel = Math.round(yk1);
 
+            System.out.println("xpix: "+xPixel+" ypix: "+yPixel);
             canvas.setRGB(xPixel, yPixel, c.getRGB());
 
-            data.add((float)k);
+            data.add(k);
             data.add(xk1);
-            data.add(yk1);
-            data.add((float) xPixel);
-            data.add((float) yPixel);
+            data.add(600-yk1);
+            data.add(xPixel);
+            data.add(600-yPixel);
+            lastK=k;
         }
+
+        data.add(lastK++);
+        data.add(xEnd);
+        data.add(600-yEnd);
+        data.add(xEnd);
+        data.add(600-yEnd);
+        canvas.setRGB(xEnd, yEnd, Color.red.getRGB());
 
         repaint();
         new SimpleTableClass(sumRows, 5, data);

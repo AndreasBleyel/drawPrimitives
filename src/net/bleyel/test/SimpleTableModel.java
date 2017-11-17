@@ -9,13 +9,13 @@ import java.util.ArrayList;
 public class SimpleTableModel extends DefaultTableModel {
 
     private int rows, cols;
-    private ArrayList<Float> data;
+    private ArrayList<Object> data;
     private Object[] rowData;
 
     private java.lang.String[] headersDDALine = new java.lang.String[]{"K", "xk", "yk", "(xk","yk)"};
     private java.lang.String[] headersBresLine = new java.lang.String[]{"K", "pk", "xk+1", "yk+1"};
 
-    public SimpleTableModel(int rows, int cols, ArrayList<Float> data) {
+    public SimpleTableModel(int rows, int cols, ArrayList<Object> data) {
         super();
         setRows(rows);
         setCols(cols);
@@ -31,7 +31,7 @@ public class SimpleTableModel extends DefaultTableModel {
         }
 
         int k=0;
-        for (int j = 0; j < rows; j++) {
+        for (int j = 0; j <= rows; j++) {
 
             for (int i = 0; i < cols; i++) {
                 rowData[i] = data.get(k);
@@ -57,11 +57,11 @@ public class SimpleTableModel extends DefaultTableModel {
         this.cols = cols;
     }
 
-    public ArrayList<Float> getData() {
+    public ArrayList<Object> getData() {
         return data;
     }
 
-    public void setData(ArrayList<Float> data) {
+    public void setData(ArrayList<Object> data) {
         this.data = data;
     }
 }

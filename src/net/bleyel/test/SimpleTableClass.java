@@ -14,14 +14,14 @@ public class SimpleTableClass extends JFrame {
 
     private JTable table;
 
-    public SimpleTableClass(int rows, int cols, ArrayList<Float> data) {
+    public SimpleTableClass(int rows, int cols, ArrayList<Object> data) {
         table = new JTable(new SimpleTableModel(rows, cols,data));
         setColumnWidth();
         JScrollPane sPane = new JScrollPane(table);
 
         getContentPane().add(sPane);
         this.setSize(600, 250);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 
