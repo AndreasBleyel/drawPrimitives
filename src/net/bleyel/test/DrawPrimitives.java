@@ -46,8 +46,8 @@ public class DrawPrimitives extends JPanel {
 
         int sumRows;
         int cols;
-        int xPixel=0;
-        int yPixel=0;
+        int xPixel = 0;
+        int yPixel = 0;
 
         int dx = xEnd - xStart;
         int dy = yEnd - yStart;
@@ -57,16 +57,19 @@ public class DrawPrimitives extends JPanel {
         else
             sumRows = Math.abs(dy);
 
-        data.add(0);
-        data.add(xStart);
-        data.add(yStart);
-        data.add(xStart);
-        data.add(yStart);
-        canvas.setRGB(xStart, 600-yStart, Color.green.getRGB());
+
+        canvas.setRGB(xStart, 600 - yStart, Color.green.getRGB());
 
         if (algorithm) {
             //DDA
-            cols=5;
+
+            data.add(0);
+            data.add(xStart);
+            data.add(yStart);
+            data.add(xStart);
+            data.add(yStart);
+
+            cols = 5;
             float xk1 = xStart;
             float yk1 = yStart;
 
@@ -81,7 +84,7 @@ public class DrawPrimitives extends JPanel {
                 yPixel = Math.round(yk1);
 
                 System.out.println("xpix: " + xPixel + " ypix: " + yPixel);
-                canvas.setRGB(xPixel, 600-yPixel, c.getRGB());
+                canvas.setRGB(xPixel, 600 - yPixel, c.getRGB());
 
                 data.add(k);
                 data.add(xk1);
@@ -90,38 +93,54 @@ public class DrawPrimitives extends JPanel {
                 data.add(yPixel);
             }
 
+            data.add(sumRows);
+            data.add(xEnd);
+            data.add(yEnd);
+            data.add(xEnd);
+            data.add(yEnd);
+
         } else {
             //Bresenham
-            cols=4;
-            int dx2 = 2 * dx; // slope scaling factors to
-            int dy2 = 2 * dy; // avoid floating point
+
+            cols = 4;
+            int dx2 = 2 * Math.abs(dx); // slope scaling factors to
+            int dy2 = 2 * Math.abs(dy); // avoid floating point
 
             int ix = xStart < xEnd ? 1 : -1; // increment direction
             int iy = yStart < yEnd ? 1 : -1;
 
-            int p = dy2-dx;
+            int p = dy2 - Math.abs(dx);
 
-            for (int i=0; i<Math.abs(dx); i++){
-                if(p<0){
+            data.add("-");
+            data.add("-");
+            data.add(xStart);
+            data.add(yStart);
+
+            xPixel = xStart;
+            yPixel = yStart;
+            for (int i = 0; i < Math.abs(dx); i++) {
+                if (p < 0) {
                     xPixel += ix;
-                    p=p+dy2;
-                }else{
+                    p = p + dy2;
+                } else {
                     xPixel += ix;
                     yPixel += iy;
-                    p=p+dy2-dx2;
+                    p = p + dy2 - dx2;
                 }
-                canvas.setRGB(xPixel, yPixel, c.getRGB());
+
+                data.add(i);
+                data.add(p);
+                data.add(xPixel);
+                data.add(yPixel);
+
+                canvas.setRGB(xPixel, 600 - yPixel, c.getRGB());
             }
-       }
+        }
 
-        data.add(sumRows);
-        data.add(xEnd);
-        data.add(yEnd);
-        data.add(xEnd);
-        data.add(yEnd);
-        canvas.setRGB(xEnd, 600-yEnd, Color.red.getRGB());
 
-        new SimpleTableClass(sumRows,cols, data,algorithm);
+        canvas.setRGB(xEnd, 600 - yEnd, Color.red.getRGB());
+
+        new SimpleTableClass(sumRows, cols, data, algorithm);
         repaint();
     }
 

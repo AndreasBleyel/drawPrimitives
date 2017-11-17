@@ -36,23 +36,16 @@ public class SimpleTableModel extends DefaultTableModel {
         }
 
         int k = 0;
-        if (algorithm) {
-            //DDA
-            for (int j = 0; j <= rows; j++) {
-                for (int i = 0; i < cols; i++) {
-                    System.out.println(data.size() + " rows: " + rows + " cols: " + cols + " k: " + k);
-                    rowData[i] = data.get(k);
-                    k++;
-                }
-                this.addRow(rowData);
+
+        for (int j = 0; j <= rows; j++) {
+            for (int i = 0; i < cols; i++) {
+                System.out.println(data.size() + " rows: " + rows + " cols: " + cols + " k: " + k);
+                rowData[i] = data.get(k);
+                k++;
             }
-        } else {
-            //Bres
-            for (Object obj:data
-                 ) {
-                System.out.println(obj);
-            }
+            this.addRow(rowData);
         }
+
     }
 
     public int getRows() {

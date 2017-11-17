@@ -68,7 +68,7 @@ public class InputValues {
 
         JFrame drawingFrame = new JFrame("Drawing Frame");
         DrawPrimitives panel = new DrawPrimitives(width, height, Color.WHITE);
-        //panel.drawLine(xStart,yStart,xEnd,yEnd,Color.black,false); //Bres
+        panel.drawLine(xStart,yStart,xEnd,yEnd,Color.black,false); //Bres
         panel.drawLine(xStart,yStart,xEnd,yEnd,Color.black,true); //DDA
 
         drawingFrame.add(panel);
