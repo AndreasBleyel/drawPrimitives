@@ -22,7 +22,6 @@ public class SimpleTableModel extends DefaultTableModel {
     private String[] headersMirrorCords = new String[]{"x", "y"};
 
 
-
     public SimpleTableModel(int rows, int cols, ArrayList<Object> data, boolean algorithm, char primitive) {
         super();
         setRows(rows);
@@ -63,27 +62,13 @@ public class SimpleTableModel extends DefaultTableModel {
 
         switch (primitive) {
             case 'l':
-                int k = 0;
-                for (int j = 0; j <= rows; j++) {
-                    for (int n = 0; n < cols; n++) {
-                        rowData[n] = data.get(k);
-                        k++;
-                    }
-                    this.addRow(rowData);
-                }
+                fillTable();
                 break;
             case 'c':
-                if(algorithm) {
+                if (algorithm) {
                     //Ecu parametricas
-                    k = 0;
-                    for (int j = 0; j < rows; j++) {
-                        for (int n = 0; n < cols; n++) {
-                            rowData[n] = data.get(k);
-                            k++;
-                        }
-                        this.addRow(rowData);
-                    }
-                }else{
+                    fillTable();
+                } else {
                     //punto medio
                     /*this.addRow(headersMirrorCords);
 
@@ -101,8 +86,17 @@ public class SimpleTableModel extends DefaultTableModel {
             default:
                 break;
         }
+    }
 
-
+    private void fillTable() {
+        int k = 0;
+        for (int j = 0; j < rows; j++) {
+            for (int n = 0; n < cols; n++) {
+                rowData[n] = data.get(k);
+                k++;
+            }
+            this.addRow(rowData);
+        }
     }
 
     public int getRows() {

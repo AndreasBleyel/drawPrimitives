@@ -73,17 +73,14 @@ public class InputValues {
                             break;
 
                         case 'c':
-                            /*int xCenterCircle = Integer.parseInt(txt_centerX.getText());
+                            int xCenterCircle = Integer.parseInt(txt_centerX.getText());
                             int yCenterCircle = Integer.parseInt(txt_centerY.getText());
                             int radiusCircle = Integer.parseInt(txt_radius.getText());
-*/
+
                             String methodCircle = cBox_circleElipse.getSelectedItem().toString();
                             if (methodCircle.matches("Ecuaciones parametricas")) algorithm = true;
                             else algorithm = false;
 
-                            int xCenterCircle = 135;
-                            int yCenterCircle = 63;
-                            int radiusCircle = 22;
                             panel.drawCircle(xCenterCircle,yCenterCircle,radiusCircle,algorithm,Color.black);
 
                             break;

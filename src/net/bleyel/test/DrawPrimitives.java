@@ -8,10 +8,14 @@ import java.util.ArrayList;
 public class DrawPrimitives extends JPanel {
 
     private BufferedImage canvas;
+    private int width;
+    private int height;
 
     public DrawPrimitives(int width, int height, Color background) {
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         fillCanvas(background);
+        setWidth(width);
+        setHeight(height);
     }
 
     public Dimension getPreferredSize() {
@@ -57,8 +61,9 @@ public class DrawPrimitives extends JPanel {
         else
             sumRows = Math.abs(dy);
 
-
-        canvas.setRGB(xStart, 600 - yStart, Color.green.getRGB());
+        if (xStart >= 0 && xStart <= width && yStart >= 0 && yStart <= height) {
+            canvas.setRGB(xStart, height - yStart, Color.green.getRGB());
+        }
 
         if (algorithm) {
             //DDA
@@ -84,7 +89,9 @@ public class DrawPrimitives extends JPanel {
                 yPixel = Math.round(yk1);
 
                 System.out.println("xpix: " + xPixel + " ypix: " + yPixel);
-                canvas.setRGB(xPixel, 600 - yPixel, c.getRGB());
+                if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                    canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                }
 
                 data.add(k);
                 data.add(xk1);
@@ -132,15 +139,16 @@ public class DrawPrimitives extends JPanel {
                 data.add(p);
                 data.add(xPixel);
                 data.add(yPixel);
-
-                canvas.setRGB(xPixel, 600 - yPixel, c.getRGB());
+                if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                    canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                }
             }
         }
 
-
-        canvas.setRGB(xEnd, 600 - yEnd, Color.red.getRGB());
-
-        new SimpleTableClass(sumRows, cols, data, algorithm, 'l');
+        if (xEnd >= 0 && xEnd <= width && yEnd >= 0 && yEnd <= height) {
+            canvas.setRGB(xEnd, height - yEnd, Color.red.getRGB());
+        }
+        new SimpleTableClass(sumRows+1, cols, data, algorithm, 'l');
         repaint();
     }
 
@@ -169,7 +177,7 @@ public class DrawPrimitives extends JPanel {
             data.add(xCenter + radius);
             data.add(yCenter);
 
-            while (theta < 2*Math.PI) {
+            while (theta < 2 * Math.PI) {
                 xk = xCenter + radius * Math.cos(theta);
                 yk = yCenter + radius * Math.sin(theta);
                 xPixel = Math.round((float) xk);
@@ -182,9 +190,10 @@ public class DrawPrimitives extends JPanel {
                 data.add(xPixel);
                 data.add(yPixel);
 
-                if(xPixel >= 0 && xPixel <=800 && yPixel>=0 && yPixel<=600)
-                    canvas.setRGB(xPixel, 600 - yPixel, c.getRGB());
-
+                System.out.println("x: " + xPixel + " y: " + yPixel);
+                if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                    canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                }
                 theta += 1 / (float) radius;
                 sumRows++;
             }
@@ -197,7 +206,7 @@ public class DrawPrimitives extends JPanel {
                 if(n%2==0){
                     xPixel = coord;
                 }else{
-                    canvas.setRGB(xPixel, 600 - coord, c.getRGB());
+                    canvas.setRGB(xPixel, height - coord, c.getRGB());
                 }
                 n++;
             }
@@ -261,5 +270,14 @@ public class DrawPrimitives extends JPanel {
     public void drawOval(Color c, int x1, int y1, int width, int height) {
         // Implement oval drawing
         repaint();
+    }
+
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }
