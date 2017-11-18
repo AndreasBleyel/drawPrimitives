@@ -69,8 +69,10 @@ public class SimpleTableModel extends DefaultTableModel {
                     //Ecu parametricas
                     fillTable();
                 } else {
+                    int k=fillTable();
+
                     //punto medio
-                    /*this.addRow(headersMirrorCords);
+                    this.addRow(headersMirrorCords);
 
                     while (k<data.size()){
                         for (int m =0; m<2;m++) {
@@ -78,7 +80,7 @@ public class SimpleTableModel extends DefaultTableModel {
                             k++;
                         }
                         this.addRow(mirrorCords);
-                    }   */
+                    }
                 }
                 break;
             case 'e':
@@ -88,7 +90,7 @@ public class SimpleTableModel extends DefaultTableModel {
         }
     }
 
-    private void fillTable() {
+    private int fillTable() {
         int k = 0;
         for (int j = 0; j < rows; j++) {
             for (int n = 0; n < cols; n++) {
@@ -97,6 +99,7 @@ public class SimpleTableModel extends DefaultTableModel {
             }
             this.addRow(rowData);
         }
+        return k;
     }
 
     public int getRows() {

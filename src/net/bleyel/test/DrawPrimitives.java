@@ -148,7 +148,7 @@ public class DrawPrimitives extends JPanel {
         if (xEnd >= 0 && xEnd <= width && yEnd >= 0 && yEnd <= height) {
             canvas.setRGB(xEnd, height - yEnd, Color.red.getRGB());
         }
-        new SimpleTableClass(sumRows+1, cols, data, algorithm, 'l');
+        new SimpleTableClass(sumRows + 1, cols, data, algorithm, 'l');
         repaint();
     }
 
@@ -163,8 +163,6 @@ public class DrawPrimitives extends JPanel {
         int xPixel;
         int yPixel;
         int j = 0;
-        ArrayList<Integer> coordsPosPos = new ArrayList<>();
-        ArrayList<Integer> mirrorCords = new ArrayList<>();
 
 
         if (algorithm) {
@@ -190,7 +188,6 @@ public class DrawPrimitives extends JPanel {
                 data.add(xPixel);
                 data.add(yPixel);
 
-                System.out.println("x: " + xPixel + " y: " + yPixel);
                 if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
                     canvas.setRGB(xPixel, height - yPixel, c.getRGB());
                 }
@@ -198,43 +195,105 @@ public class DrawPrimitives extends JPanel {
                 sumRows++;
             }
 
-            /*mirrorCords = mirrorViertel(coordsPosPos,radius);
 
-            int n=0;
-            xPixel=0;
-            for (Integer coord : mirrorCords) {
-                if(n%2==0){
-                    xPixel = coord;
-                }else{
-                    canvas.setRGB(xPixel, height - coord, c.getRGB());
+        } else {
+            //punto medio
+
+            ArrayList<Integer> coordsPosPos = new ArrayList<>();
+            ArrayList<Integer> allCoordsCenterZero;
+            ArrayList<Integer> allCoordsCenterCorrect = new ArrayList<>();
+
+            int pk = 1 - radius;
+            int xk12;
+            int yk12;
+            sumRows = 1;
+
+            xPixel = 0;
+            yPixel = radius;
+
+            data.add("-");
+            data.add("-");
+            data.add(xPixel);
+            data.add(yPixel);
+            data.add(xPixel);
+            data.add(yPixel);
+
+            coordsPosPos.add(xPixel);
+            coordsPosPos.add(yPixel);
+
+            j = 0;
+            data.add(++j);
+            data.add(pk);
+
+            while (xPixel < yPixel) {
+                xPixel++;
+                xk12 = 2 * xPixel;
+                yk12 = 2 * yPixel;
+                if (pk < 0) {
+                    pk = pk + xk12 + 1;
+                } else {
+                    yPixel--;
+                    pk = pk + xk12 + 1 - yk12;
+                }
+
+                coordsPosPos.add(xPixel);
+                coordsPosPos.add(yPixel);
+
+                data.add(xPixel);
+                data.add(yPixel);
+                data.add(xk12);
+                data.add(yk12);
+                data.add(++j);
+                data.add(pk);
+                sumRows++;
+            }
+            data.remove(data.size() - 1);
+            data.remove(data.size() - 2);
+
+            allCoordsCenterZero = calcAllCords(coordsPosPos, radius);
+
+            int n = 0;
+            xPixel = 0;
+            for (Integer coord : allCoordsCenterZero) {
+                if (n % 2 == 0) {
+                    xPixel = coord + xCenter;
+                } else {
+                    yPixel = coord + yCenter;
+                    if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                        canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                    }
+                    allCoordsCenterCorrect.add(xPixel);
+                    allCoordsCenterCorrect.add(yPixel);
                 }
                 n++;
             }
 
-            data.addAll(mirrorCords);*/
-
-        } else {
-            //punto medio
+            data.addAll(allCoordsCenterZero);
+            data.addAll(allCoordsCenterCorrect);
         }
 
         new SimpleTableClass(sumRows, cols, data, algorithm, 'c');
         repaint();
     }
 
-    private ArrayList<Integer> mirrorViertel(ArrayList<Integer> pospos, int radius) {
+    private ArrayList<Integer> calcAllCords(ArrayList<Integer> pospos, int radius) {
         ArrayList<Integer> coordsPosNeg = new ArrayList<>();
         ArrayList<Integer> coordsNegPos = new ArrayList<>();
         ArrayList<Integer> coordsNegNeg = new ArrayList<>();
+        ArrayList<Integer> halfCoords = new ArrayList<>();
+        ArrayList<Integer> otherHalfCoords = new ArrayList<>();
         ArrayList<Integer> allCoords = new ArrayList<>();
+
         int i = 0;
 
         for (Integer coord : pospos) {
+
             if (i % 2 == 0)  // gerade
                 coordsPosNeg.add(coord);
             else // ungerade
                 coordsPosNeg.add(coord * -1);
-
             i++;
+
         }
         i = 0;
         for (Integer coord : pospos) {
@@ -249,10 +308,26 @@ public class DrawPrimitives extends JPanel {
             coordsNegNeg.add(coord * -1);
         }
 
-        allCoords.addAll(coordsPosNeg);
-        allCoords.addAll(coordsNegPos);
-        allCoords.addAll(coordsNegNeg);
+        halfCoords.addAll(pospos);
+        halfCoords.addAll(coordsPosNeg);
+        halfCoords.addAll(coordsNegPos);
+        halfCoords.addAll(coordsNegNeg);
 
+        //vertauschen
+        i = 0;
+        int temp = 0;
+        for (Integer coord : halfCoords) {
+            if (i % 2 == 0) {
+                temp = coord;
+            } else {
+                otherHalfCoords.add(coord);
+                otherHalfCoords.add(temp);
+            }
+            i++;
+        }
+
+        allCoords.addAll(halfCoords);
+        allCoords.addAll(otherHalfCoords);
         return allCoords;
     }
 
