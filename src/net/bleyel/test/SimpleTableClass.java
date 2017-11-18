@@ -9,9 +9,6 @@ import java.util.ArrayList;
  */
 public class SimpleTableClass extends JFrame {
 
-    private final int small = 50;
-    private final int big = 150;
-
     private JTable table;
 
     public SimpleTableClass(int rows, int cols, ArrayList<Object> data, boolean algorithm, char primitive) {
@@ -28,18 +25,8 @@ public class SimpleTableClass extends JFrame {
     private void setColumnWidth() {
         for (int i = 0; i < table.getColumnCount(); i++) {
             TableColumn c = table.getColumnModel().getColumn(i);
-            switch (i) {
-                case 1:
-                    c.setPreferredWidth(small);
-                    break;
+            c.setPreferredWidth(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
-                case 4:
-                    c.setPreferredWidth(big);
-                    break;
-
-                default:
-                    c.setPreferredWidth(JTable.AUTO_RESIZE_ALL_COLUMNS);
-            }
         }
     }
 }

@@ -144,34 +144,36 @@ public class DrawPrimitives extends JPanel {
         repaint();
     }
 
-    public void drawCircle(int xCenter, int yCenter, int radius, boolean algorithm, Color c){
+    public void drawCircle(int xCenter, int yCenter, int radius, boolean algorithm, Color c) {
 
         ArrayList<Object> data = new ArrayList<Object>();
-        int sumRows=1;
-        int cols=6;
+        int sumRows = 1;
+        int cols = 6;
         double xk;
         double yk;
-        double theta = 1/(float)radius;
+        double theta = 1 / (float) radius;
         int xPixel;
         int yPixel;
-        int j=0;
+        int j = 0;
+        ArrayList<Integer> coordsPosPos = new ArrayList<>();
+        ArrayList<Integer> mirrorCords = new ArrayList<>();
 
-        if(algorithm){
+
+        if (algorithm) {
             //Ecu parametricas
 
             data.add(0);
             data.add(0);
-            data.add(xCenter+radius);
+            data.add(xCenter + radius);
             data.add(yCenter);
-            data.add(xCenter+radius);
+            data.add(xCenter + radius);
             data.add(yCenter);
 
-            while (theta<(Math.PI/2)) {
+            while (theta < 2*Math.PI) {
                 xk = xCenter + radius * Math.cos(theta);
                 yk = yCenter + radius * Math.sin(theta);
                 xPixel = Math.round((float) xk);
                 yPixel = Math.round((float) yk);
-
 
                 data.add(++j);
                 data.add(theta);
@@ -180,18 +182,69 @@ public class DrawPrimitives extends JPanel {
                 data.add(xPixel);
                 data.add(yPixel);
 
-                canvas.setRGB(xPixel, 600 - yPixel, c.getRGB());
-                theta += 1/(float)radius;
+                if(xPixel >= 0 && xPixel <=800 && yPixel>=0 && yPixel<=600)
+                    canvas.setRGB(xPixel, 600 - yPixel, c.getRGB());
+
+                theta += 1 / (float) radius;
                 sumRows++;
             }
 
+            /*mirrorCords = mirrorViertel(coordsPosPos,radius);
 
-        }else{
+            int n=0;
+            xPixel=0;
+            for (Integer coord : mirrorCords) {
+                if(n%2==0){
+                    xPixel = coord;
+                }else{
+                    canvas.setRGB(xPixel, 600 - coord, c.getRGB());
+                }
+                n++;
+            }
+
+            data.addAll(mirrorCords);*/
+
+        } else {
             //punto medio
         }
 
         new SimpleTableClass(sumRows, cols, data, algorithm, 'c');
         repaint();
+    }
+
+    private ArrayList<Integer> mirrorViertel(ArrayList<Integer> pospos, int radius) {
+        ArrayList<Integer> coordsPosNeg = new ArrayList<>();
+        ArrayList<Integer> coordsNegPos = new ArrayList<>();
+        ArrayList<Integer> coordsNegNeg = new ArrayList<>();
+        ArrayList<Integer> allCoords = new ArrayList<>();
+        int i = 0;
+
+        for (Integer coord : pospos) {
+            if (i % 2 == 0)  // gerade
+                coordsPosNeg.add(coord);
+            else // ungerade
+                coordsPosNeg.add(coord * -1);
+
+            i++;
+        }
+        i = 0;
+        for (Integer coord : pospos) {
+            if (i % 2 == 0)  // gerade
+                coordsNegPos.add(coord * -1);
+            else // ungerade
+                coordsNegPos.add(coord);
+            i++;
+        }
+
+        for (Integer coord : pospos) {
+            coordsNegNeg.add(coord * -1);
+        }
+
+        allCoords.addAll(coordsPosNeg);
+        allCoords.addAll(coordsNegPos);
+        allCoords.addAll(coordsNegNeg);
+
+        return allCoords;
     }
 
     public void drawRect(Color c, int x1, int y1, int width, int height) {
