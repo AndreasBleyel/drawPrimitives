@@ -25,6 +25,16 @@ public class InputValues {
     private JButton btn_line;
     private JButton btn_circle;
     private JButton btn_elipse;
+    private JLabel lbl_radius;
+    private JTextField txt_radius;
+    private JLabel lbl_centerX;
+    private JTextField txt_centerX;
+    private JLabel lbl_centerY;
+    private JTextField txt_centerY;
+    private JLabel lbl_rx;
+    private JTextField txt_rx;
+    private JLabel lbl_ry;
+    private JTextField txt_ry;
     private char primitive;
 
     public static void main(String[] args) {
@@ -64,7 +74,7 @@ public class InputValues {
                     int yStart = 71;
                     int xEnd = 32;
                     int yEnd = 79;
-                    showDrawing(xStart, xEnd, yStart, yEnd,algorithm);
+                    showDrawing(xStart, xEnd, yStart, yEnd, algorithm);
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Invalid Input");
                     e.printStackTrace();
@@ -84,6 +94,8 @@ public class InputValues {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 hideAllElements();
+                primitive = 'l';
+
                 txt_xStart.setVisible(true);
                 txt_xEnd.setVisible(true);
                 txt_yStart.setVisible(true);
@@ -94,12 +106,44 @@ public class InputValues {
                 lbl_lineYend.setVisible(true);
                 lbl_typOfPrimitive.setVisible(true);
                 cBox_line.setVisible(true);
-                primitive = 'l';
+            }
+        });
+        btn_circle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                hideAllElements();
+                primitive = 'c';
+
+                lbl_radius.setVisible(true);
+                txt_radius.setVisible(true);
+                lbl_centerX.setVisible(true);
+                txt_centerX.setVisible(true);
+                lbl_centerY.setVisible(true);
+                txt_centerY.setVisible(true);
+            }
+        });
+        btn_elipse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                hideAllElements();
+                primitive = 'e';
+
+                lbl_radius.setVisible(true);
+                txt_radius.setVisible(true);
+                lbl_centerX.setVisible(true);
+                txt_centerX.setVisible(true);
+                lbl_centerY.setVisible(true);
+                txt_centerY.setVisible(true);
+                
+                lbl_rx.setVisible(true);
+                txt_rx.setVisible(true);
+                lbl_ry.setVisible(true);
+                txt_ry.setVisible(true);
             }
         });
     }
 
-    private void showDrawing(int xStart, int xEnd, int yStart, int yEnd,boolean algorithm) {
+    private void showDrawing(int xStart, int xEnd, int yStart, int yEnd, boolean algorithm) {
         int width = 800;
         int height = 600;
 
@@ -125,5 +169,17 @@ public class InputValues {
         lbl_lineYend.setVisible(false);
         lbl_typOfPrimitive.setVisible(false);
         cBox_line.setVisible(false);
+
+        lbl_radius.setVisible(false);
+        txt_radius.setVisible(false);
+        lbl_centerX.setVisible(false);
+        txt_centerX.setVisible(false);
+        lbl_centerY.setVisible(false);
+        txt_centerY.setVisible(false);
+
+        lbl_rx.setVisible(false);
+        txt_rx.setVisible(false);
+        lbl_ry.setVisible(false);
+        txt_ry.setVisible(false);
     }
 }
