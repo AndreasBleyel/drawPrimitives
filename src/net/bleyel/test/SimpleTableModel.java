@@ -40,12 +40,14 @@ public class SimpleTableModel extends DefaultTableModel {
                         this.addColumn(headersDDALine[i]);
                     else
                         this.addColumn(headersBresLine[i]);
+
                     break;
                 case 'c':
                     if (algorithm)
                         this.addColumn(headersEcuacionCircle[i]);
                     else
                         this.addColumn(headersPuntoCircle[i]);
+
                     break;
                 case 'e':
                     break;
@@ -55,16 +57,33 @@ public class SimpleTableModel extends DefaultTableModel {
 
         }
 
-        int k = 0;
-
-        for (int j = 0; j <= rows; j++) {
-            for (int i = 0; i < cols; i++) {
-                System.out.println(data.size() + " rows: " + rows + " cols: " + cols + " k: " + k);
-                rowData[i] = data.get(k);
-                k++;
-            }
-            this.addRow(rowData);
+        switch (primitive) {
+            case 'l':
+                int k = 0;
+                for (int j = 0; j <= rows; j++) {
+                    for (int n = 0; n < cols; n++) {
+                        rowData[n] = data.get(k);
+                        k++;
+                    }
+                    this.addRow(rowData);
+                }
+                break;
+            case 'c':
+                k = 0;
+                for (int j = 0; j < rows; j++) {
+                    for (int n = 0; n < cols; n++) {
+                        rowData[n] = data.get(k);
+                        k++;
+                    }
+                    this.addRow(rowData);
+                }
+                break;
+            case 'e':
+                break;
+            default:
+                break;
         }
+
 
     }
 

@@ -46,8 +46,8 @@ public class DrawPrimitives extends JPanel {
 
         int sumRows;
         int cols;
-        int xPixel = 0;
-        int yPixel = 0;
+        int xPixel;
+        int yPixel;
 
         int dx = xEnd - xStart;
         int dy = yEnd - yStart;
@@ -103,8 +103,8 @@ public class DrawPrimitives extends JPanel {
             //Bresenham
 
             cols = 4;
-            int dx2 = 2 * Math.abs(dx); // slope scaling factors to
-            int dy2 = 2 * Math.abs(dy); // avoid floating point
+            int dx2 = 2 * Math.abs(dx);
+            int dy2 = 2 * Math.abs(dy);
 
             int ix = xStart < xEnd ? 1 : -1; // increment direction
             int iy = yStart < yEnd ? 1 : -1;
@@ -144,8 +144,54 @@ public class DrawPrimitives extends JPanel {
         repaint();
     }
 
-    public void drawCircle(int xCenter, int yCenter, int radius, boolean algorithm){
-        System.out.println(xCenter+" "+yCenter+" "+radius+" "+algorithm);
+    public void drawCircle(int xCenter, int yCenter, int radius, boolean algorithm, Color c){
+
+        ArrayList<Object> data = new ArrayList<Object>();
+        int sumRows=1;
+        int cols=6;
+        double xk;
+        double yk;
+        double theta = 1/(float)radius;
+        int xPixel;
+        int yPixel;
+        int j=0;
+
+        if(algorithm){
+            //Ecu parametricas
+
+            data.add(0);
+            data.add(0);
+            data.add(xCenter+radius);
+            data.add(yCenter);
+            data.add(xCenter+radius);
+            data.add(yCenter);
+
+            while (theta<(Math.PI/2)) {
+                xk = xCenter + radius * Math.cos(theta);
+                yk = yCenter + radius * Math.sin(theta);
+                xPixel = Math.round((float) xk);
+                yPixel = Math.round((float) yk);
+
+
+                data.add(++j);
+                data.add(theta);
+                data.add(xk);
+                data.add(yk);
+                data.add(xPixel);
+                data.add(yPixel);
+
+                canvas.setRGB(xPixel, 600 - yPixel, c.getRGB());
+                theta += 1/(float)radius;
+                sumRows++;
+            }
+
+
+        }else{
+            //punto medio
+        }
+
+        new SimpleTableClass(sumRows, cols, data, algorithm, 'c');
+        repaint();
     }
 
     public void drawRect(Color c, int x1, int y1, int width, int height) {
