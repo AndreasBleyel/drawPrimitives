@@ -20,7 +20,7 @@ public class SimpleTableClass extends JFrame {
         JScrollPane sPane = new JScrollPane(table);
 
         getContentPane().add(sPane);
-        this.setSize(600, 250);
+        this.setSize(600, 400);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
