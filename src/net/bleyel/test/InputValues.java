@@ -19,7 +19,6 @@ public class InputValues {
     private JLabel lbl_lineXend;
     private JLabel lbl_lineYstart;
     private JLabel lbl_lineYend;
-    private JLabel lbl_typOfPrimitive;
     private JButton btn_reset;
     private JButton btn_ok;
     private JButton btn_line;
@@ -35,7 +34,10 @@ public class InputValues {
     private JTextField txt_rx;
     private JLabel lbl_ry;
     private JTextField txt_ry;
+    private JComboBox cBox_circleElipse;
     private char primitive;
+    private int width = 800;
+    private int height = 600;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("InputValues");
@@ -51,18 +53,36 @@ public class InputValues {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    boolean algorithm = true;
+                    JFrame drawingFrame = new JFrame("Drawing Frame");
+                    DrawPrimitives panel = new DrawPrimitives(width, height, Color.WHITE);
+
+                    boolean algorithm;
                     switch (primitive) {
                         case 'l':
-                            /*int xStart = Integer.parseInt(txt_xStart.getText());
-                    int xEnd = Integer.parseInt(txt_xEnd.getText());
-                    int yStart = Integer.parseInt(txt_yStart.getText());
-                    int yEnd = Integer.parseInt(txt_yEnd.getText());*/
-                            String method = cBox_line.getSelectedItem().toString();
-                            if (method.matches("DDA")) algorithm = true;
+                            int xStartLine = Integer.parseInt(txt_xStart.getText());
+                            int xEndLine = Integer.parseInt(txt_xEnd.getText());
+                            int yStartLine = Integer.parseInt(txt_yStart.getText());
+                            int yEndLine = Integer.parseInt(txt_yEnd.getText());
+
+                            String methodLine = cBox_line.getSelectedItem().toString();
+                            if (methodLine.matches("DDA")) algorithm = true;
                             else algorithm = false;
+
+                           panel.drawLine(xStartLine, yStartLine, xEndLine, yEndLine, Color.black, algorithm);
+
                             break;
+
                         case 'c':
+                            int xCenterCircle = Integer.parseInt(txt_centerX.getText());
+                            int yCenterCircle = Integer.parseInt(txt_centerY.getText());
+                            int radiusCircle = Integer.parseInt(txt_radius.getText());
+
+                            String methodCircle = cBox_circleElipse.getSelectedItem().toString();
+                            if (methodCircle.matches("Ecuaciones parametricas")) algorithm = true;
+                            else algorithm = false;
+
+                            panel.drawCircle(xCenterCircle,yCenterCircle,radiusCircle,algorithm);
+
                             break;
                         case 'e':
                             break;
@@ -70,11 +90,12 @@ public class InputValues {
                             break;
                     }
 
-                    int xStart = 50;
-                    int yStart = 71;
-                    int xEnd = 32;
-                    int yEnd = 79;
-                    showDrawing(xStart, xEnd, yStart, yEnd, algorithm);
+                    drawingFrame.add(panel);
+                    drawingFrame.pack();
+                    drawingFrame.setVisible(true);
+                    drawingFrame.setResizable(false);
+                    drawingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Invalid Input");
                     e.printStackTrace();
@@ -104,7 +125,6 @@ public class InputValues {
                 lbl_lineXend.setVisible(true);
                 lbl_lineYstart.setVisible(true);
                 lbl_lineYend.setVisible(true);
-                lbl_typOfPrimitive.setVisible(true);
                 cBox_line.setVisible(true);
             }
         });
@@ -120,6 +140,8 @@ public class InputValues {
                 txt_centerX.setVisible(true);
                 lbl_centerY.setVisible(true);
                 txt_centerY.setVisible(true);
+                cBox_circleElipse.setVisible(true);
+
             }
         });
         btn_elipse.addActionListener(new ActionListener() {
@@ -134,28 +156,16 @@ public class InputValues {
                 txt_centerX.setVisible(true);
                 lbl_centerY.setVisible(true);
                 txt_centerY.setVisible(true);
-                
+
                 lbl_rx.setVisible(true);
                 txt_rx.setVisible(true);
                 lbl_ry.setVisible(true);
                 txt_ry.setVisible(true);
+
+                cBox_circleElipse.setVisible(true);
+
             }
         });
-    }
-
-    private void showDrawing(int xStart, int xEnd, int yStart, int yEnd, boolean algorithm) {
-        int width = 800;
-        int height = 600;
-
-        JFrame drawingFrame = new JFrame("Drawing Frame");
-        DrawPrimitives panel = new DrawPrimitives(width, height, Color.WHITE);
-        panel.drawLine(xStart, yStart, xEnd, yEnd, Color.black, algorithm); //Bres
-
-        drawingFrame.add(panel);
-        drawingFrame.pack();
-        drawingFrame.setVisible(true);
-        drawingFrame.setResizable(false);
-        drawingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void hideAllElements() {
@@ -167,7 +177,6 @@ public class InputValues {
         lbl_lineXend.setVisible(false);
         lbl_lineYstart.setVisible(false);
         lbl_lineYend.setVisible(false);
-        lbl_typOfPrimitive.setVisible(false);
         cBox_line.setVisible(false);
 
         lbl_radius.setVisible(false);
@@ -181,5 +190,7 @@ public class InputValues {
         txt_rx.setVisible(false);
         lbl_ry.setVisible(false);
         txt_ry.setVisible(false);
+
+        cBox_circleElipse.setVisible(false);
     }
 }

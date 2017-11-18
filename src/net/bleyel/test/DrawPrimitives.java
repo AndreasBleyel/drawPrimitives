@@ -140,8 +140,12 @@ public class DrawPrimitives extends JPanel {
 
         canvas.setRGB(xEnd, 600 - yEnd, Color.red.getRGB());
 
-        new SimpleTableClass(sumRows, cols, data, algorithm);
+        new SimpleTableClass(sumRows, cols, data, algorithm, 'l');
         repaint();
+    }
+
+    public void drawCircle(int xCenter, int yCenter, int radius, boolean algorithm){
+        System.out.println(xCenter+" "+yCenter+" "+radius+" "+algorithm);
     }
 
     public void drawRect(Color c, int x1, int y1, int width, int height) {
