@@ -221,18 +221,22 @@ public class DrawPrimitives extends JPanel {
             coordsPosPos.add(xPixel);
             coordsPosPos.add(yPixel);
 
-            j = 0;
+            j = -1;
             data.add(++j);
             data.add(pk);
 
             while (xPixel < yPixel) {
-                xPixel++;
-                xk12 = 2 * xPixel;
-                yk12 = 2 * yPixel;
+
                 if (pk < 0) {
+                    xPixel++;
+                    xk12 = 2 * xPixel;
+                    yk12 = 2 * yPixel;
                     pk = pk + xk12 + 1;
                 } else {
+                    xPixel++;
                     yPixel--;
+                    xk12 = 2 * xPixel;
+                    yk12 = 2 * yPixel;
                     pk = pk + xk12 + 1 - yk12;
                 }
 
@@ -248,7 +252,7 @@ public class DrawPrimitives extends JPanel {
                 sumRows++;
             }
             data.remove(data.size() - 1);
-            data.remove(data.size() - 2);
+            data.remove(data.size() - 1);
 
             allCoordsCenterZero = calcAllCords(coordsPosPos, true);
 

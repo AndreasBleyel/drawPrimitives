@@ -85,10 +85,10 @@ public class InputValues {
 
                             break;
                         case 'e':
-                            int xCenterElipse = 142;
-                            int yCenterElipse = 52;
-                            int rx = 15;
-                            int ry = 11;
+                            int xCenterElipse = Integer.parseInt(txt_centerX.getText());
+                            int yCenterElipse = Integer.parseInt(txt_centerY.getText());
+                            int rx = Integer.parseInt(txt_rx.getText());
+                            int ry = Integer.parseInt(txt_ry.getText());
 
                             methodCircle = cBox_circleElipse.getSelectedItem().toString();
                             if (methodCircle.matches("Ecuaciones parametricas")) algorithm = true;
@@ -120,6 +120,11 @@ public class InputValues {
                 txt_xEnd.setText("");
                 txt_yStart.setText("");
                 txt_yEnd.setText("");
+                txt_ry.setText("");
+                txt_rx.setText("");
+                txt_centerY.setText("");
+                txt_centerX.setText("");
+                txt_radius.setText("");
             }
         });
         btn_line.addActionListener(new ActionListener() {
