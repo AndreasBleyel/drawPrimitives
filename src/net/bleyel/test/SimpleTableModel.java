@@ -20,8 +20,8 @@ public class SimpleTableModel extends DefaultTableModel {
     private String[] headersEcuacionCircle = new String[]{"K", "ϴ", "xk", "yk", "(xk,", "yk)"};
     private String[] headersPuntoCircle = new String[]{"K", "pk", "xk+1", "yk+1", "2xk+1,", "2yk+1)"};
     private String[] headersMirrorCords = new String[]{"x", "y"};
-    private String[] headersEcuacionElipse = new String[]{"K", "ϴ", "xk", "yk", "(xk,","yk)"};
-    private String[] headersPuntoElipse = new String[]{"K", "p1k", "(xk+1,", "yk+1)", "2ry² * xk+1","2rx² * yk+1"};
+    private String[] headersEcuacionElipse = new String[]{"K", "ϴ", "xk", "yk", "(xk,", "yk)"};
+    private String[] headersPuntoElipse = new String[]{"K", "p1k", "(xk+1,", "yk+1)", "2ry² * xk+1", "2rx² * yk+1"};
 
 
     public SimpleTableModel(int rows, int cols, ArrayList<Object> data, boolean algorithm, char primitive) {
@@ -55,7 +55,7 @@ public class SimpleTableModel extends DefaultTableModel {
 
                     break;
                 case 'e':
-                    if(algorithm)
+                    if (algorithm)
                         this.addColumn(headersEcuacionElipse[i]);
                     else
                         this.addColumn(headersPuntoElipse[i]);
@@ -75,12 +75,12 @@ public class SimpleTableModel extends DefaultTableModel {
                     //Ecu parametricas
                     fillTable();
                 } else {
-                    int k=fillTable();
+                    int k = fillTable();
                     //punto medio
                     this.addRow(headersMirrorCords);
 
-                    while (k<data.size()){
-                        for (int m =0; m<2;m++) {
+                    while (k < data.size()-1) {
+                        for (int m = 0; m < 2; m++) {
                             mirrorCords[m] = data.get(k);
                             k++;
                         }
@@ -89,16 +89,16 @@ public class SimpleTableModel extends DefaultTableModel {
                 }
                 break;
             case 'e':
-                if (algorithm){
+                if (algorithm) {
                     //Ecu
                     fillTable();
-                }else{
+                } else {
                     //punto
                     int k = fillTable();
                     this.addRow(headersMirrorCords);
 
-                    while (k<data.size()){
-                        for (int m =0; m<2;m++) {
+                    while (k < data.size()) {
+                        for (int m = 0; m < 2; m++) {
                             mirrorCords[m] = data.get(k);
                             k++;
                         }

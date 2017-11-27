@@ -292,24 +292,21 @@ public class DrawPrimitives extends JPanel {
 
         for (Integer coord : pospos) {
 
-            if (i % 2 == 0)  // gerade
+            if (i > 1) {
+                coordsNegNeg.add(coord * -1);
+            }
+
+            if (i % 2 == 0) {  // gerade
                 coordsPosNeg.add(coord);
-            else // ungerade
+                if (i > 1)
+                    coordsNegPos.add(coord * -1);
+            } else { // ungerade
                 coordsPosNeg.add(coord * -1);
+                if (i > 1)
+                    coordsNegPos.add(coord);
+            }
             i++;
 
-        }
-        i = 0;
-        for (Integer coord : pospos) {
-            if (i % 2 == 0)  // gerade
-                coordsNegPos.add(coord * -1);
-            else // ungerade
-                coordsNegPos.add(coord);
-            i++;
-        }
-
-        for (Integer coord : pospos) {
-            coordsNegNeg.add(coord * -1);
         }
 
         halfCoords.addAll(pospos);
@@ -320,23 +317,32 @@ public class DrawPrimitives extends JPanel {
 
         if (circle) {
 
-
             //vertauschen
-            i = 0;
-            int temp = 0;
-            for (Integer coord : halfCoords) {
-                if (i % 2 == 0) {
-                    temp = coord;
-                } else {
-                    otherHalfCoords.add(coord);
-                    otherHalfCoords.add(temp);
-                }
-                i++;
-            }
+            otherHalfCoords.addAll(vertauschen(pospos));
+            otherHalfCoords.addAll(vertauschen(coordsPosNeg));
+            otherHalfCoords.addAll(vertauschen(coordsNegPos));
+            otherHalfCoords.addAll(vertauschen(coordsNegNeg));
 
             allCoords.addAll(otherHalfCoords);
         }
         return allCoords;
+    }
+
+    private ArrayList<Integer> vertauschen(ArrayList<Integer> list) {
+        ArrayList<Integer> returnList = new ArrayList<>();
+
+        int temp = 0;
+        for (int j = 0; j < list.size() - 1; j++) {
+            if (j % 2 == 0) {
+                temp = list.get(j);
+            } else {
+                returnList.add(list.get(j));
+                returnList.add(temp);
+            }
+        }
+
+        return returnList;
+
     }
 
     public void drawRect(Color c, int x1, int y1, int width, int height) {
