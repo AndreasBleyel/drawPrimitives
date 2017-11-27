@@ -68,26 +68,34 @@ public class InputValues {
                             if (methodLine.matches("DDA")) algorithm = true;
                             else algorithm = false;
 
-                           panel.drawLine(xStartLine, yStartLine, xEndLine, yEndLine, Color.black, algorithm);
+                            panel.drawLine(xStartLine, yStartLine, xEndLine, yEndLine, Color.black, algorithm);
 
                             break;
 
                         case 'c':
-                            /*int xCenterCircle = Integer.parseInt(txt_centerX.getText());
+                            int xCenterCircle = Integer.parseInt(txt_centerX.getText());
                             int yCenterCircle = Integer.parseInt(txt_centerY.getText());
                             int radiusCircle = Integer.parseInt(txt_radius.getText());
-*/
-                            int xCenterCircle = 37;
-                            int yCenterCircle = 86;
-                            int radiusCircle = 17;
+
                             String methodCircle = cBox_circleElipse.getSelectedItem().toString();
                             if (methodCircle.matches("Ecuaciones parametricas")) algorithm = true;
                             else algorithm = false;
 
-                            panel.drawCircle(xCenterCircle,yCenterCircle,radiusCircle,algorithm,Color.black);
+                            panel.drawCircle(xCenterCircle, yCenterCircle, radiusCircle, algorithm, Color.black);
 
                             break;
                         case 'e':
+                            int xCenterElipse = 142;
+                            int yCenterElipse = 52;
+                            int rx = 15;
+                            int ry = 11;
+
+                            methodCircle = cBox_circleElipse.getSelectedItem().toString();
+                            if (methodCircle.matches("Ecuaciones parametricas")) algorithm = true;
+                            else algorithm = false;
+
+                            panel.drawElipse(xCenterElipse, yCenterElipse, rx, ry, algorithm, Color.black);
+
                             break;
                         default:
                             break;
@@ -153,8 +161,7 @@ public class InputValues {
                 hideAllElements();
                 primitive = 'e';
 
-                lbl_radius.setVisible(true);
-                txt_radius.setVisible(true);
+
                 lbl_centerX.setVisible(true);
                 txt_centerX.setVisible(true);
                 lbl_centerY.setVisible(true);

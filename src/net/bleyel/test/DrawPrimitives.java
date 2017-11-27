@@ -342,8 +342,157 @@ public class DrawPrimitives extends JPanel {
         repaint();
     }
 
-    public void drawOval(Color c, int x1, int y1, int width, int height) {
-        // Implement oval drawing
+    public void drawElipse(int xCenter, int yCenter, int rx, int ry, boolean algorithm, Color c) {
+        // Ecuaciones parametricas
+
+        double theta = 0;
+        double dtheta = 1d / ((rx + ry) / 2d);
+        double d1theta = 1 / rx;
+        double d2theta = 1 / ry;
+
+        ArrayList<Object> data = new ArrayList<Object>();
+        int sumRows = 1;
+        int cols = 6;
+        double xk = xCenter + rx * Math.cos(theta);
+        double yk = yCenter + ry * Math.sin(theta);
+        int xPixel = (int) xk;
+        int yPixel = (int) yk;
+        int j = 0;
+
+        if (algorithm) {
+            //true ecuaciones
+
+            data.add(0);
+            data.add(0);
+            data.add(xk);
+            data.add(yk);
+            data.add(xPixel);
+            data.add(yPixel);
+
+            if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+            }
+
+            theta = theta + dtheta;
+            j = 1;
+            while (theta < 2 * Math.PI) {
+                xk = xCenter + rx * Math.cos(theta);
+                yk = yCenter + ry * Math.sin(theta);
+                xPixel = Math.round((float) xk);
+                yPixel = Math.round((float) yk);
+
+                data.add(j);
+                data.add(theta);
+                data.add(xk);
+                data.add(yk);
+                data.add(xPixel);
+                data.add(yPixel);
+                sumRows++;
+                j++;
+                theta = theta + dtheta;
+
+                if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                    canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                }
+            }
+
+        } else {
+            //false punto medio
+
+            xPixel = 0;
+            yPixel = ry;
+
+            long p1k = Math.round(Math.pow(ry, 2) - Math.pow(rx, 2) * ry + 0.25 * Math.pow(rx, 2));
+
+            int ry2xk1 = 2 * (int) Math.pow(ry, 2);
+            int rx2yk1 = 2 * (int) Math.pow(rx, 2) * yPixel;
+
+            data.add("-");
+            data.add("-");
+            data.add(xPixel);
+            data.add(yPixel);
+            data.add("-");
+            data.add("-");
+
+            if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+            }
+
+            j = 0;
+            while (ry2xk1 < rx2yk1) {
+
+                data.add(j);
+                data.add(p1k);
+
+                if (p1k < 0) {
+                    xPixel++;
+                    ry2xk1 = 2 * (int) Math.pow(ry, 2) * xPixel;
+                    p1k = p1k + ry2xk1 + (int) Math.pow(ry, 2);
+                } else {
+                    xPixel++;
+                    yPixel--;
+                    ry2xk1 = 2 * (int) Math.pow(ry, 2) * xPixel;
+                    rx2yk1 = 2 * (int) Math.pow(rx, 2) * yPixel;
+                    p1k = p1k + ry2xk1 - rx2yk1 + (int) Math.pow(ry, 2);
+                }
+
+                if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                    canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                }
+
+                data.add(xPixel);
+                data.add(yPixel);
+                data.add(ry2xk1);
+                data.add(rx2yk1);
+
+
+                j++;
+                sumRows++;
+            }
+
+            long p2k = Math.round(Math.pow(ry, 2) * Math.pow((xPixel + 0.5), 2) + Math.pow(rx, 2) * Math.pow(yPixel - 1, 2) - Math.pow(rx, 2) * Math.pow(ry, 2));
+
+            while (yPixel - 1 > 0) {
+
+                data.add(j);
+                data.add(p2k);
+
+                if (p2k <= 0) {
+                    xPixel++;
+                    yPixel--;
+                    rx2yk1 = 2 * (int) Math.pow(rx, 2) * yPixel;
+                    ry2xk1 = 2 * (int) Math.pow(ry, 2) * xPixel;
+                    p2k = p2k + ry2xk1 - rx2yk1 + (int) Math.pow(rx, 2);
+
+                } else {
+                    yPixel--;
+                    rx2yk1 = 2 * (int) Math.pow(rx, 2) * yPixel;
+                    p2k = p2k - rx2yk1 + (int) Math.pow(rx, 2);
+                }
+
+                if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                    canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                }
+
+                data.add(xPixel);
+                data.add(yPixel);
+                data.add(ry2xk1);
+                data.add(rx2yk1);
+
+                j++;
+                sumRows++;
+            }
+
+            data.add(j);
+            data.add(p2k);
+            data.add(xPixel);
+            data.add(yPixel);
+            data.add(ry2xk1);
+            data.add(0);
+            sumRows++;
+
+        }
+        new SimpleTableClass(sumRows, cols, data, algorithm, 'e');
         repaint();
     }
 

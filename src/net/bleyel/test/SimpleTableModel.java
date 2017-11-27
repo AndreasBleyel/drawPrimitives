@@ -20,6 +20,8 @@ public class SimpleTableModel extends DefaultTableModel {
     private String[] headersEcuacionCircle = new String[]{"K", "ϴ", "xk", "yk", "(xk,", "yk)"};
     private String[] headersPuntoCircle = new String[]{"K", "pk", "xk+1", "yk+1", "2xk+1,", "2yk+1)"};
     private String[] headersMirrorCords = new String[]{"x", "y"};
+    private String[] headersEcuacionElipse = new String[]{"K", "ϴ", "xk", "yk", "(xk,","yk)"};
+    private String[] headersPuntoElipse = new String[]{"K", "p1k", "(xk+1,", "yk+1)", "2ry² * xk+1","2rx² * yk+1"};
 
 
     public SimpleTableModel(int rows, int cols, ArrayList<Object> data, boolean algorithm, char primitive) {
@@ -53,6 +55,10 @@ public class SimpleTableModel extends DefaultTableModel {
 
                     break;
                 case 'e':
+                    if(algorithm)
+                        this.addColumn(headersEcuacionElipse[i]);
+                    else
+                        this.addColumn(headersPuntoElipse[i]);
                     break;
                 default:
                     break;
@@ -70,7 +76,6 @@ public class SimpleTableModel extends DefaultTableModel {
                     fillTable();
                 } else {
                     int k=fillTable();
-
                     //punto medio
                     this.addRow(headersMirrorCords);
 
@@ -84,6 +89,13 @@ public class SimpleTableModel extends DefaultTableModel {
                 }
                 break;
             case 'e':
+                if (algorithm){
+                    //Ecu
+                    fillTable();
+                }else{
+                    //punto
+                    fillTable();
+                }
                 break;
             default:
                 break;
