@@ -250,7 +250,7 @@ public class DrawPrimitives extends JPanel {
             data.remove(data.size() - 1);
             data.remove(data.size() - 2);
 
-            allCoordsCenterZero = calcAllCords(coordsPosPos, radius);
+            allCoordsCenterZero = calcAllCords(coordsPosPos, true);
 
             int n = 0;
             xPixel = 0;
@@ -276,7 +276,7 @@ public class DrawPrimitives extends JPanel {
         repaint();
     }
 
-    private ArrayList<Integer> calcAllCords(ArrayList<Integer> pospos, int radius) {
+    private ArrayList<Integer> calcAllCords(ArrayList<Integer> pospos, boolean circle) {
         ArrayList<Integer> coordsPosNeg = new ArrayList<>();
         ArrayList<Integer> coordsNegPos = new ArrayList<>();
         ArrayList<Integer> coordsNegNeg = new ArrayList<>();
@@ -312,22 +312,26 @@ public class DrawPrimitives extends JPanel {
         halfCoords.addAll(coordsPosNeg);
         halfCoords.addAll(coordsNegPos);
         halfCoords.addAll(coordsNegNeg);
-
-        //vertauschen
-        i = 0;
-        int temp = 0;
-        for (Integer coord : halfCoords) {
-            if (i % 2 == 0) {
-                temp = coord;
-            } else {
-                otherHalfCoords.add(coord);
-                otherHalfCoords.add(temp);
-            }
-            i++;
-        }
-
         allCoords.addAll(halfCoords);
-        allCoords.addAll(otherHalfCoords);
+
+        if (circle) {
+
+
+            //vertauschen
+            i = 0;
+            int temp = 0;
+            for (Integer coord : halfCoords) {
+                if (i % 2 == 0) {
+                    temp = coord;
+                } else {
+                    otherHalfCoords.add(coord);
+                    otherHalfCoords.add(temp);
+                }
+                i++;
+            }
+
+            allCoords.addAll(otherHalfCoords);
+        }
         return allCoords;
     }
 
@@ -399,8 +403,15 @@ public class DrawPrimitives extends JPanel {
         } else {
             //false punto medio
 
+            ArrayList<Integer> coordsPosPos = new ArrayList<>();
+            ArrayList<Integer> allCoordsCenterZero;
+            ArrayList<Integer> allCoordsCenterCorrect = new ArrayList<>();
+
             xPixel = 0;
             yPixel = ry;
+
+            coordsPosPos.add(xPixel);
+            coordsPosPos.add(yPixel);
 
             long p1k = Math.round(Math.pow(ry, 2) - Math.pow(rx, 2) * ry + 0.25 * Math.pow(rx, 2));
 
@@ -414,9 +425,6 @@ public class DrawPrimitives extends JPanel {
             data.add("-");
             data.add("-");
 
-            if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
-                canvas.setRGB(xPixel, height - yPixel, c.getRGB());
-            }
 
             j = 0;
             while (ry2xk1 < rx2yk1) {
@@ -436,9 +444,8 @@ public class DrawPrimitives extends JPanel {
                     p1k = p1k + ry2xk1 - rx2yk1 + (int) Math.pow(ry, 2);
                 }
 
-                if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
-                    canvas.setRGB(xPixel, height - yPixel, c.getRGB());
-                }
+                coordsPosPos.add(xPixel);
+                coordsPosPos.add(yPixel);
 
                 data.add(xPixel);
                 data.add(yPixel);
@@ -470,9 +477,8 @@ public class DrawPrimitives extends JPanel {
                     p2k = p2k - rx2yk1 + (int) Math.pow(rx, 2);
                 }
 
-                if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
-                    canvas.setRGB(xPixel, height - yPixel, c.getRGB());
-                }
+                coordsPosPos.add(xPixel);
+                coordsPosPos.add(yPixel);
 
                 data.add(xPixel);
                 data.add(yPixel);
@@ -486,12 +492,39 @@ public class DrawPrimitives extends JPanel {
             data.add(j);
             data.add(p2k);
             data.add(xPixel);
-            data.add(yPixel);
+            data.add(0);
             data.add(ry2xk1);
             data.add(0);
+
+            coordsPosPos.add(xPixel);
+            coordsPosPos.add(0);
+
             sumRows++;
 
+            allCoordsCenterZero = calcAllCords(coordsPosPos, false);
+
+            int n = 0;
+            xPixel = 0;
+            for (Integer coord : allCoordsCenterZero) {
+                if (n % 2 == 0) {
+                    xPixel = coord + xCenter;
+                } else {
+                    yPixel = coord + yCenter;
+                    if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                        canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                    }
+                    allCoordsCenterCorrect.add(xPixel);
+                    allCoordsCenterCorrect.add(yPixel);
+                }
+                n++;
+            }
+
+            data.addAll(allCoordsCenterZero);
+            data.addAll(allCoordsCenterCorrect);
+
         }
+
+
         new SimpleTableClass(sumRows, cols, data, algorithm, 'e');
         repaint();
     }

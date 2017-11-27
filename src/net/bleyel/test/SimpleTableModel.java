@@ -94,7 +94,16 @@ public class SimpleTableModel extends DefaultTableModel {
                     fillTable();
                 }else{
                     //punto
-                    fillTable();
+                    int k = fillTable();
+                    this.addRow(headersMirrorCords);
+
+                    while (k<data.size()){
+                        for (int m =0; m<2;m++) {
+                            mirrorCords[m] = data.get(k);
+                            k++;
+                        }
+                        this.addRow(mirrorCords);
+                    }
                 }
                 break;
             default:
