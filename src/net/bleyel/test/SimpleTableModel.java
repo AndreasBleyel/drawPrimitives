@@ -116,7 +116,8 @@ public class SimpleTableModel extends DefaultTableModel {
         for (int j = 0; j < rows; j++) {
             for (int n = 0; n < cols; n++) {
                 rowData[n] = data.get(k);
-                k++;
+                if(k < data.size()-1)
+                    k++;
             }
             this.addRow(rowData);
         }

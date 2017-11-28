@@ -41,8 +41,7 @@ public class DrawPrimitives extends JPanel {
 
 
     public void drawLine(int xStart, int yStart, int xEnd, int yEnd, Color c, boolean algorithm) {
-        // Implement line drawing
-        //DDA
+
         //algo true = DDA
         //algo false = Bresenham
 
@@ -56,7 +55,7 @@ public class DrawPrimitives extends JPanel {
         int dx = xEnd - xStart;
         int dy = yEnd - yStart;
 
-        if (Math.abs(dx) > Math.abs(dy))
+        if (Math.abs(dx) < Math.abs(dy))
             sumRows = Math.abs(dx);
         else
             sumRows = Math.abs(dy);
@@ -125,6 +124,7 @@ public class DrawPrimitives extends JPanel {
 
             xPixel = xStart;
             yPixel = yStart;
+            System.out.println("math: " + Math.abs(dx));
             for (int i = 0; i < Math.abs(dx); i++) {
                 if (p < 0) {
                     xPixel += ix;
@@ -148,7 +148,10 @@ public class DrawPrimitives extends JPanel {
         if (xEnd >= 0 && xEnd <= width && yEnd >= 0 && yEnd <= height) {
             canvas.setRGB(xEnd, height - yEnd, Color.red.getRGB());
         }
-        new SimpleTableClass(sumRows + 1, cols, data, algorithm, 'l');
+
+        sumRows++;
+        System.out.println("rowsbefore: " + sumRows);
+        new SimpleTableClass(sumRows, cols, data, algorithm, 'l');
         repaint();
     }
 
@@ -405,9 +408,15 @@ public class DrawPrimitives extends JPanel {
                 j++;
                 theta = theta + dtheta;
 
-                if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
-                    canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                System.out.println("xPix: " + xPixel + "\nyPix: " + yPixel + "\n--");
+                try {
+                    if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                        canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                    }
+                } catch (Exception e) {
+                    System.out.println("Fehler");
                 }
+
             }
 
         } else {
@@ -520,8 +529,13 @@ public class DrawPrimitives extends JPanel {
                     xPixel = coord + xCenter;
                 } else {
                     yPixel = coord + yCenter;
-                    if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
-                        canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                    System.out.println("xPix: " + xPixel + "\nyPix: " + yPixel + "\n--");
+                    try {
+                        if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                            canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Fehler");
                     }
                     allCoordsCenterCorrect.add(xPixel);
                     allCoordsCenterCorrect.add(yPixel);
