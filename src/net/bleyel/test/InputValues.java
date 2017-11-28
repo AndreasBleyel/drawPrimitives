@@ -59,17 +59,17 @@ public class InputValues {
                     boolean algorithm;
                     switch (primitive) {
                         case 'l':
-                            /*int xStartLine = Integer.parseInt(txt_xStart.getText());
+                            int xStartLine = Integer.parseInt(txt_xStart.getText());
                             int xEndLine = Integer.parseInt(txt_xEnd.getText());
                             int yStartLine = Integer.parseInt(txt_yStart.getText());
                             int yEndLine = Integer.parseInt(txt_yEnd.getText());
-*/
 
-                            int xStartLine = -5;
+
+                            /*int xStartLine = -5;
                             int xEndLine = 14;
                             int yStartLine = 3;
                             int yEndLine = 30;
-
+*/
                             String methodLine = cBox_line.getSelectedItem().toString();
                             if (methodLine.matches("DDA")) algorithm = true;
                             else algorithm = false;
