@@ -52,13 +52,14 @@ public class DrawPrimitives extends JPanel {
         int xPixel;
         int yPixel;
 
-        int dx = xEnd - xStart;
-        int dy = yEnd - yStart;
+        int dx = Math.abs(xEnd - xStart);
+        int dy = Math.abs(yEnd - yStart);
 
         if (Math.abs(dx) < Math.abs(dy))
             sumRows = Math.abs(dx);
         else
             sumRows = Math.abs(dy);
+
         try {
             if (xStart >= 0 && xStart <= width && yStart >= 0 && yStart <= height) {
                 canvas.setRGB(xStart, height - yStart, Color.green.getRGB());
@@ -112,47 +113,91 @@ public class DrawPrimitives extends JPanel {
             data.add(yEnd);
 
         } else {
-            //Bresenham
 
             cols = 4;
-            int dx2 = 2 * Math.abs(dx);
-            int dy2 = 2 * Math.abs(dy);
+
+            xPixel = xStart;
+            yPixel = yStart;
+
+            try {
+                if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                    canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                }
+            } catch (Exception e) {
+                System.out.println("OOB");
+            }
+
+            int p;
+            int twoDy;
+            int twoDyMinustwoDx;
+            float m = (float)dy/(float)dx;
+            int steps;
 
             int ix = xStart < xEnd ? 1 : -1; // increment direction
             int iy = yStart < yEnd ? 1 : -1;
 
-            int p = dy2 - Math.abs(dx);
+            if(m < 1){
+                twoDy = 2*dy;
+                twoDyMinustwoDx = twoDy - 2*dx;
+                p = twoDy - dx;
+                steps = dx;
+            }else {
+                twoDy = 2*dx;
+                twoDyMinustwoDx = 2*dx - 2*dy;
+                p = twoDy - dy;
+                steps = dy;
+            }
+
+            System.out.println("M: "+m);
+            System.out.printf("K | p | x | y |\n----------------\n");
+            System.out.printf("- | - | %d | %d |\n",xPixel,yPixel);
+
 
             data.add("-");
             data.add("-");
-            data.add(xStart);
-            data.add(yStart);
+            data.add(xPixel);
+            data.add(yPixel);
 
-            xPixel = xStart;
-            yPixel = yStart;
-            for (int i = 0; i < Math.abs(dx); i++) {
-                if (p < 0) {
-                    xPixel += ix;
-                    p = p + dy2;
-                } else {
-                    xPixel += ix;
-                    yPixel += iy;
-                    p = p + dy2 - dx2;
-                }
+            for(int i=0; i<steps;i++){
 
-                data.add(i);
-                data.add(p);
-                data.add(xPixel);
-                data.add(yPixel);
+                if(p <0){
+                    if(m<1)
+                        xPixel+=ix;
+                    else
+                        yPixel+=iy;
 
-                try {
-                    if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
-                        canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                    try {
+                        if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                            canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                        }
+                    } catch (Exception e) {
+                        System.out.println("OOB");
                     }
-                } catch (Exception e) {
-                    System.out.println("Fehler");
+                    System.out.printf("%d | %d | %d | %d |\n",i,p,xPixel,yPixel);
+                    data.add(i);
+                    data.add(p);
+                    data.add(xPixel);
+                    data.add(yPixel);
+                    p = p + twoDy;
+                }else{
+                    xPixel+=ix;
+                    yPixel+=iy;
+                    try {
+                        if (xPixel >= 0 && xPixel <= width && yPixel >= 0 && yPixel <= height) {
+                            canvas.setRGB(xPixel, height - yPixel, c.getRGB());
+                        }
+                    } catch (Exception e) {
+                        System.out.println("OOB");
+                    }
+                    System.out.printf("%d | %d | %d | %d |\n",i,p,xPixel,yPixel);
+                    data.add(i);
+                    data.add(p);
+                    data.add(xPixel);
+                    data.add(yPixel);
+                    p = p + twoDyMinustwoDx;
                 }
             }
+            sumRows = steps;
         }
 
         try {
@@ -164,8 +209,8 @@ public class DrawPrimitives extends JPanel {
         }
 
         sumRows++;
-        System.out.println("rowsbefore: " + sumRows);
         new SimpleTableClass(sumRows, cols, data, algorithm, 'l');
+
         repaint();
     }
 
@@ -579,6 +624,11 @@ public class DrawPrimitives extends JPanel {
         repaint();
     }
 
+    private void outputPolygon(Polygon polygon) {
+        for (int i = 0; i < polygon.npoints; i++) {
+            System.out.printf("%d: x: %d y: %d\n", i, polygon.xpoints[i], polygon.ypoints[i]);
+        }
+    }
 
     public void setWidth(int width) {
         this.width = width;
